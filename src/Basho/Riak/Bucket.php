@@ -213,6 +213,7 @@ class Bucket
     public function get($key, $r = null)
     {
         $obj = new Object($this->client, $this, $key);
+		$obj->setContentType('application/json');
         $obj->jsonize = true;
         $r = $this->getR($r);
 
@@ -229,6 +230,7 @@ class Bucket
     public function getBinary($key, $r = null)
     {
         $obj = new Object($this->client, $this, $key);
+		$obj->setContentType('application/json');
         $obj->jsonize = false;
         $r = $this->getR($r);
 
@@ -358,6 +360,7 @@ class Bucket
 
         # Use a Object to interpret the response, we are just interested in the value.
         $obj = new Object($this->client, $this, null);
+		$obj->setContentType('application/json');
         $obj->populate($response, array(200));
         if (!$obj->exists()) {
             throw new Exception("Error getting bucket properties.");
@@ -384,6 +387,7 @@ class Bucket
 
         # Use a Object to interpret the response, we are just interested in the value.
         $obj = new Object($this->client, $this, null);
+		$obj->setContentType('application/json');
         $obj->populate($response, array(200));
         if (!$obj->exists()) {
             throw new Exception("Error getting bucket properties.");
@@ -410,6 +414,7 @@ class Bucket
         $response = Utils::httpRequest('GET', $url);
 
         $obj = new Object($this->client, $this, null);
+		$obj->setContentType('application/json');
 
         $obj->populate($response, array(200));
         if (!$obj->exists()) {

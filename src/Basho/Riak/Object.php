@@ -164,6 +164,9 @@ class Object
      */
     public function getContentType()
     {
+		if (!isset($this->headers['content-type'])) {
+			return 'application/json';
+		}
         return $this->headers['content-type'];
     }
 
@@ -634,7 +637,7 @@ class Object
             // look up the value
             if (isset($this->data[$fieldName])) {
                 $value = $this->data[$fieldName];
-                $headers[] = "x-riak-index-$index: " . urlencode($value);
+                $headers[] = "x-riak-index-$index: " . $value;
 
                 // look for value collisions with normal indexes
                 if (isset($this->indexes[$index])) {
@@ -653,7 +656,7 @@ class Object
 
         # Add the indexes
         foreach ($this->indexes as $index => $values) {
-            $headers[] = "x-riak-index-$index: " . join(', ', array_map('urlencode', $values));
+            $headers[] = "x-riak-index-$index: " . join(', ', $values);
         }
 
 
@@ -828,7 +831,7 @@ class Object
                     case 'index':
                         $index = substr($matches[2], 0, strrpos($matches[2], '_'));
                         $type = substr($matches[2], strlen($index) + 1);
-                        $this->setIndex($index, $type, array_map('urldecode', explode(', ', $val)));
+                        $this->setIndex($index, $type, explode(', ', $val));
                         break;
                     case 'meta':
                         $this->meta[$matches[2]] = $val;
